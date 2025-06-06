@@ -1,32 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Voiceflow Assistant</title>
-  </head>
-  <body>
-    <script>
-      // Change this to your actual Hivebrite domain
-      const allowedReferrer = "hoganhive.com";
+<body>
+  <div id="chat-container" style="width: 100%; height: 100%;"></div>
+  <script>
+    const allowedReferrer = "hoganhive.com";
 
-      if (document.referrer.includes(allowedReferrer)) {
-        // Dynamically load Voiceflow script ONLY if referrer is allowed
-        const script = document.createElement('script');
-        script.src = "https://cdn.voiceflow.com/widget/bundle.mjs";
-        script.type = "module";
-        script.onload = function() {
-          window.voiceflow.chat.load({
-            verify: { projectID: "682f32eec820586e7ef69bb1" },
-            url: "https://general-runtime.voiceflow.com",
-            versionID: "production"
-          });
-        };
-        document.head.appendChild(script);
-      } else {
-        // No Voiceflow script loaded → no grey bar
-        document.body.innerHTML = "<p style='font-family:sans-serif;padding:1rem;'>Access denied. You must access this bot from the Hivebrite site.</p>";
-      }
-    </script>
-  </body>
-</html>
+    if (document.referrer.includes(allowedReferrer)) {
+      const script = document.createElement('script');
+      script.src = "https://cdn.voiceflow.com/widget/bundle.mjs";
+      script.type = "module";
+      script.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: "682f32eec820586e7ef69bb1" },
+          url: "https://general-runtime.voiceflow.com",
+          versionID: "production",
+          render: {
+            mode: 'embedded',
+            target: document.getElementById('chat-container')
+          }
+        });
+      };
+      document.head.appendChild(script);
+    } else {
+      document.body.innerHTML = "<p style='font-family:sans-serif;padding:1rem;'>Access denied. You must access this bot from the Hivebrite site.</p>";
+    }
+  </script>
+</body>
+        
             
