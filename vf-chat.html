@@ -1,36 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Voiceflow Assistant</title>
-  </head>
-  <body>
-    <script type="text/javascript">
-      (function(d, t) {
-          var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-          v.onload = function() {
-            window.voiceflow.chat.load({
-              verify: { projectID: '682f32eec820586e7ef69bb1' },
-              url: 'https://general-runtime.voiceflow.com',
-              versionID: 'production',
-              voice: {
-                url: "https://runtime-api.voiceflow.com"
-              }
-            })
-            .then(() => {
-              // Auto-open the chat
-              setTimeout(() => {
-                window.voiceflow.chat.open();
-              }, 0);
-
-              // OPTIONAL: If you want to hide the launcher bubble, uncomment this line:
-              // window.voiceflow.chat.hide();
-            });
-          };
-          v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; 
-          v.type = "text/javascript"; 
-          s.parentNode.insertBefore(v, s);
-      })(document, 'script');
-    </script>
-  </body>
-</html>
+<body>
+  <div id="chat-container" style="width: 100%; height: 100%;"></div>
+  <script type="text/javascript">
+    (function(d, t) {
+        var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+        v.onload = function() {
+          window.voiceflow.chat.load({
+            verify: { projectID: '682f32eec820586e7ef69bb1' },
+            url: 'https://general-runtime.voiceflow.com',
+            versionID: 'production',
+            voice: {
+              url: "https://runtime-api.voiceflow.com"
+            },
+            render: {
+              mode: 'embedded',
+              target: document.getElementById('chat-container')
+            }
+          })
+          .then(() => {
+            setTimeout(() => {
+              window.voiceflow.chat.open();
+            }, 0);
+          });
+        };
+        v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; 
+        v.type = "text/javascript"; 
+        s.parentNode.insertBefore(v, s);
+    })(document, 'script');
+  </script>
+</body>
