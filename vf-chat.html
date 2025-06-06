@@ -10,6 +10,7 @@
       // Change this to your actual Hivebrite domain
       const allowedReferrer = "hoganhive.com";
 
+      // Do the check early:
       if (document.referrer.includes(allowedReferrer)) {
         window.voiceflow.chat.load({
           verify: { projectID: "682f32eec820586e7ef69bb1" },
@@ -17,7 +18,12 @@
           versionID: "production"
         });
       } else {
-        document.body.innerHTML = "<p>Access denied.</p>";
+        // Optional cleanup just in case
+        if (window.voiceflow?.chat?.unload) {
+          window.voiceflow.chat.unload();
+        }
+        // Clear body early
+        document.body.innerHTML = "<p style='font-family:sans-serif;padding:1rem;'>Access denied. You must access this bot from the Hivebrite site.</p>";
       }
     </script>
   </body>
