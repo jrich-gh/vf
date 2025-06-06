@@ -11,8 +11,7 @@
       const allowedReferrer = "hoganhive.com";
 
       if (document.referrer.includes(allowedReferrer)) {
-        window.voiceflow.chat
-          .load({
+        window.voiceflow.chat.load({
             verify: { projectID: "682f32eec820586e7ef69bb1" },
             url: "https://general-runtime.voiceflow.com",
             versionID: "production"
