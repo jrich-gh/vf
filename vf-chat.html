@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Voiceflow Assistant</title>
+    <script src="https://cdn.voiceflow.com/widget/bundle.mjs" type="module"></script>
+  </head>
+  <body>
+    <script>
+      // Change this to your actual Hivebrite domain
+      const allowedReferrer = "hoganhive.com";
+
+      if (document.referrer.includes(allowedReferrer)) {
+        window.voiceflow.chat.load({
+          verify: { projectID: "682f32eec820586e7ef69bb1" },
+          url: "https://general-runtime.voiceflow.com",
+          versionID: "production"
+        });
+      } else {
+        document.body.innerHTML = "<p>Access denied.</p>";
+      }
+    </script>
+  </body>
+</html>
