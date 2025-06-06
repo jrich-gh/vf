@@ -16,6 +16,15 @@
               voice: {
                 url: "https://runtime-api.voiceflow.com"
               }
+            })
+            .then(() => {
+              // Auto-open the chat
+              setTimeout(() => {
+                window.voiceflow.chat.open();
+              }, 0);
+
+              // OPTIONAL: If you want to hide the launcher bubble, uncomment this line:
+              // window.voiceflow.chat.hide();
             });
           };
           v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; 
