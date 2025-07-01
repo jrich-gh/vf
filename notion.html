@@ -13,11 +13,19 @@
           },
           render: {
             mode: 'embedded',
-            target: document.getElementById(...)
+            target: document.getElementById('chat-container')
           }
-        });
-      }
-      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
-  })(document, 'script');
-</script>
+        })
+          .then(() => {
+            setTimeout(() => {
+              window.voiceflow.chat.open();
+            }, 0);
+          });
+        };
+        v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; 
+        v.type = "text/javascript"; 
+        s.parentNode.insertBefore(v, s);
+    })(document, 'script');
+  </script>
 </body>
+
