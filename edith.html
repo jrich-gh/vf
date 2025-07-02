@@ -84,7 +84,10 @@
     const script = d.createElement(t);
     script.onload = function() {
       window.voiceflow.chat.load({
-        verify: { projectID: '68657b9f8fe6d3041395e329' },
+        verify: { 
+          projectID: '68657b9f8fe6d3041395e329' 
+          userID: `${Date.now()}`
+        },
         url: 'https://general-runtime.voiceflow.com',
         versionID: 'production',
         voice: {
