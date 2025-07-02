@@ -111,28 +111,29 @@
       console.log("🔁 Voiceflow event received:", msg);
       console.log("🧪 Full payload contents:", msg.payload);
 
-
       if (msg.type === 'voiceflow:close' || msg.type === 'voiceflow:save_session') {
-        const sessionId = msg?.payload?.sessionId || window.voiceflow?.chat?.session?.sessionID;
+        // Try Voiceflow's internal session context
+        const vfSessionId = window.voiceflow?.chat?.session?.sessionID 
+                          || window.voiceflow?.chat?.session?.sessionId 
+                          || null;
 
-        if (sessionId) {
-          console.log("✅ Session ID sent to Make:", sessionId);
+        if (vfSessionId) {
+          console.log("✅ Extracted sessionId:", vfSessionId);
 
           await fetch('https://hook.us2.make.com/x8wn53cv94mrxggpp0yrg56otvaf6e3c', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sessionId })
+            body: JSON.stringify({ sessionId: vfSessionId })
           });
         } else {
-          console.warn("⚠️ Session ID not found in event payload or Voiceflow context.");
+          console.warn("⚠️ Could not find session ID in Voiceflow chat object.");
         }
       }
     } catch (e) {
-      console.error('❌ Failed to parse Voiceflow event message:', e);
+      console.error('❌ Error parsing Voiceflow event message:', e);
     }
   }
 });
-
     };
     script.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
     script.type = "text/javascript";
