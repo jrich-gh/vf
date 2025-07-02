@@ -105,42 +105,44 @@
 
       // Listen for chat close or session save event
       window.addEventListener('message', async (evt) => {
-  if (typeof evt.data === 'string') {
-    try {
-      const msg = JSON.parse(evt.data);
-      console.log("🔁 Voiceflow event received:", msg);
-      console.log("🧪 Full payload contents:", msg.payload);
+        if (typeof evt.data === 'string') {
+          try {
+            const msg = JSON.parse(evt.data);
+            console.log("🔁 Voiceflow event received:", msg);
+            console.log("🧪 Full payload contents:", msg.payload);
 
-      if (msg.type === 'voiceflow:close' || msg.type === 'voiceflow:save_session') {
-        // Try Voiceflow's internal session context
-        const vfSessionId = window.voiceflow?.chat?.session?.sessionID 
-                          || window.voiceflow?.chat?.session?.sessionId 
-                          || null;
+            if (msg.type === 'voiceflow:close' || msg.type === 'voiceflow:save_session') {
+              // Try all possible session ID sources
+              const vfSessionId = msg.payload?.sessionID
+                               || msg.payload?.sessionId
+                               || msg.payload?.userID  // <-- fallback added here
+                               || window.voiceflow?.chat?.session?.sessionID
+                               || window.voiceflow?.chat?.session?.sessionId
+                               || null;
 
-        if (vfSessionId) {
-          console.log("✅ Extracted sessionId:", vfSessionId);
+              if (vfSessionId) {
+                console.log("✅ Extracted sessionId:", vfSessionId);
 
-          await fetch('https://hook.us2.make.com/x8wn53cv94mrxggpp0yrg56otvaf6e3c', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sessionId: vfSessionId })
-          });
-        } else {
-          console.warn("⚠️ Could not find session ID in Voiceflow chat object.");
+                await fetch('https://hook.us2.make.com/x8wn53cv94mrxggpp0yrg56otvaf6e3c', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ sessionId: vfSessionId })
+                });
+              } else {
+                console.warn("⚠️ Session ID not found in event payload or Voiceflow context.");
+              }
+            }
+          } catch (e) {
+            console.error('❌ Error parsing Voiceflow event message:', e);
+          }
         }
-      }
-    } catch (e) {
-      console.error('❌ Error parsing Voiceflow event message:', e);
-    }
-  }
-});
+      });
     };
     script.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
     script.type = "text/javascript";
     d.body.appendChild(script);
   })(document, 'script');
 </script>
-
 
 </body>
 </html>
