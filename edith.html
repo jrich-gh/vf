@@ -109,7 +109,7 @@
               await fetch('https://hook.us2.make.com/x8wn53cv94mrxggpp0yrg56otvaf6e3c', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ sessionId: msg.payload.sessionID })
+                body: JSON.stringify({ sessionId: msg.payload.sessionId })
               });
             }
           } catch (e) {
