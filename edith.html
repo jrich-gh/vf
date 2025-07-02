@@ -109,6 +109,8 @@
     try {
       const msg = JSON.parse(evt.data);
       console.log("🔁 Voiceflow event received:", msg);
+      console.log("🧪 Full payload contents:", msg.payload);
+
 
       if (msg.type === 'voiceflow:close' || msg.type === 'voiceflow:save_session') {
         const sessionId = msg?.payload?.sessionId || window.voiceflow?.chat?.session?.sessionID;
