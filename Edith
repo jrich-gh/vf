@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edith Feedback Bot Demo</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    button {
+      background-color: #2f3192;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 2rem;
+    }
+    button:hover {
+      background-color: #1f206e;
+    }
+    ol {
+      margin-bottom: 2rem;
+    }
+    #chat-container {
+      width: 100%;
+      height: 600px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Edith Feedback Bot Demo</h1>
+
+  <h2>Background Info</h2>
+  <p>
+    Edith is the Vice President of Marketing at a Fortune 500 retail and e-commerce company headquartered in Austin, Texas. With over 20 years of experience, she began her career in the high-paced tech startup ecosystem and later held a senior marketing role at Adobe before transitioning to her current company. Edith is widely respected within her organization and is being actively groomed for a CMO position
+  </p>
+  <p>
+    In her current role, she oversees brand strategy, customer engagement, and digital experience. She leads a team of over 40 marketers and collaborates closely with product, design, and data teams to drive customer-centric innovation. Edith is known for her creativity, high standards, and deep intuition about consumer behavior.
+  </p>
+  <p>
+   Day to day, Edith balances long-term strategic initiatives—like rebranding and CX redesigns—with operational oversight of campaign planning, performance tracking, and executive stakeholder engagement. She's assertive, expressive, and passionate about building meaningful customer relationships, yet she sometimes struggles to slow down, delegate, or fully empathize with teams that resist change.
+  </p>
+  <p>
+  Edith thrives in environments that reward ambition and innovation but is sometimes frustrated by legacy processes, organizational silos, or passive collaborators. She values influence, growth, and aesthetic expression, and is deeply motivated by the opportunity to make an impact—both on her customers and on the culture of the teams she leads.
+  </p>
+
+  <h2>Flash Report</h2>
+  <a href="Edith Flash Report.pdf" download>
+    <button>Download</button>
+  </a>
+
+  <h2>Resume</h2>
+  <a href="Edith Resume.pdf" download>
+    <button>Download</button>
+  </a>
+
+  <h2>Instructions</h2>
+  <ol>
+    <li>Click the unmute button in the upper right corner of the chat box</li>
+    <li>Once you’re ready to provide feedback, click the mic icon in the lower left corner of the chat box (inside the text input field)</li>
+    <li>Grant permission for the browser to use your mic (may not be needed)</li>
+    <li>Provide your feedback as you normally would</li>
+    <li>When you’re ready for the bot to respond, click stop (where the mic icon was) and then click the blue arrow to send</li>
+    <li>Listen to the bot’s response and repeat the steps as many times as needed</li>
+  </ol>
+
+  <h2>Chat with Edith</h2>
+  <div id="chat-container"></div>
+
+  <script type="text/javascript">
+    (function(d, t) {
+      const script = d.createElement(t);
+      script.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '68657b9f8fe6d3041395e329' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production',
+          voice: {
+            url: "https://runtime-api.voiceflow.com"
+          },
+          render: {
+            mode: 'embedded',
+            target: document.getElementById('chat-container')
+          }
+        }).then(() => {
+          setTimeout(() => {
+            window.voiceflow.chat.open();
+          }, 0);
+        });
+      };
+      script.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+      script.type = "text/javascript";
+      d.body.appendChild(script);
+    })(document, 'script');
+  </script>
+
+</body>
+</html>
