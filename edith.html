@@ -105,21 +105,32 @@
 
       // Listen for chat close or session save event
       window.addEventListener('message', async (evt) => {
-        if (typeof evt.data === 'string') {
-          try {
-            const msg = JSON.parse(evt.data);
-            if (msg.type === 'voiceflow:close' || msg.type === 'voiceflow:save_session') {
-              await fetch('https://hook.us2.make.com/x8wn53cv94mrxggpp0yrg56otvaf6e3c', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ sessionId: msg.payload.sessionId })
-              });
-            }
-          } catch (e) {
-            console.error('Failed to parse Voiceflow event message:', e);
-          }
+  if (typeof evt.data === 'string') {
+    try {
+      const msg = JSON.parse(evt.data);
+      console.log("🔁 Voiceflow event received:", msg);
+
+      if (msg.type === 'voiceflow:close' || msg.type === 'voiceflow:save_session') {
+        const sessionId = msg?.payload?.sessionId || window.voiceflow?.chat?.session?.sessionID;
+
+        if (sessionId) {
+          console.log("✅ Session ID sent to Make:", sessionId);
+
+          await fetch('https://hook.us2.make.com/x8wn53cv94mrxggpp0yrg56otvaf6e3c', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId })
+          });
+        } else {
+          console.warn("⚠️ Session ID not found in event payload or Voiceflow context.");
         }
-      });
+      }
+    } catch (e) {
+      console.error('❌ Failed to parse Voiceflow event message:', e);
+    }
+  }
+});
+
     };
     script.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
     script.type = "text/javascript";
