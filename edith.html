@@ -79,32 +79,51 @@
   <h2>Chat with Edith</h2>
   <div id="chat-container"></div>
 
-  <script type="text/javascript">
-    (function(d, t) {
-      const script = d.createElement(t);
-      script.onload = function() {
-        window.voiceflow.chat.load({
-          verify: { projectID: '68657b9f8fe6d3041395e329' },
-          url: 'https://general-runtime.voiceflow.com',
-          versionID: 'production',
-          voice: {
-            url: "https://runtime-api.voiceflow.com"
-          },
-          render: {
-            mode: 'embedded',
-            target: document.getElementById('chat-container')
+<script type="text/javascript">
+  (function(d, t) {
+    const script = d.createElement(t);
+    script.onload = function() {
+      window.voiceflow.chat.load({
+        verify: { projectID: '68657b9f8fe6d3041395e329' },
+        url: 'https://general-runtime.voiceflow.com',
+        versionID: 'production',
+        voice: {
+          url: "https://runtime-api.voiceflow.com"
+        },
+        render: {
+          mode: 'embedded',
+          target: document.getElementById('chat-container')
+        }
+      }).then(() => {
+        setTimeout(() => {
+          window.voiceflow.chat.open();
+        }, 0);
+      });
+
+      // Listen for chat close or session save event
+      window.addEventListener('message', async (evt) => {
+        if (typeof evt.data === 'string') {
+          try {
+            const msg = JSON.parse(evt.data);
+            if (msg.type === 'voiceflow:close' || msg.type === 'voiceflow:save_session') {
+              await fetch('https://hook.us2.make.com/x8wn53cv94mrxggpp0yrg56otvaf6e3c', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sessionId: msg.payload.sessionID })
+              });
+            }
+          } catch (e) {
+            console.error('Failed to parse Voiceflow event message:', e);
           }
-        }).then(() => {
-          setTimeout(() => {
-            window.voiceflow.chat.open();
-          }, 0);
-        });
-      };
-      script.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
-      script.type = "text/javascript";
-      d.body.appendChild(script);
-    })(document, 'script');
-  </script>
+        }
+      });
+    };
+    script.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+    script.type = "text/javascript";
+    d.body.appendChild(script);
+  })(document, 'script');
+</script>
+
 
 </body>
 </html>
