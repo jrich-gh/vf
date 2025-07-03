@@ -105,30 +105,33 @@
         }, 0);
       });
 
-      // Listen for widget events
+      // Listen for chat close or save
       window.addEventListener('message', async (evt) => {
         if (typeof evt.data === 'string') {
-          const msg = JSON.parse(evt.data);
+          try {
+            const msg = JSON.parse(evt.data);
+            console.log("🔁 Voiceflow event received:", msg);
+            console.log("🧪 Full payload contents:", msg.payload);
 
-          // when the user closes/minimises the chat OR when Voiceflow writes the last cache
-          if (msg.type === 'voiceflow:close' || msg.type === 'voiceflow:save_session') {
-            /*
-              At this point the transcript has been saved.
-              Call your Make.com webhook and hand over the sessionId so Make
-              can pull the full transcript.
-            */
-            fetch('https://hook.us2.make.com/x8wn53cv94mrxggpp0yrg56otvaf6e3c', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ sessionId: msg.payload.sessionID })
-            });
+            if (msg.type === 'voiceflow:close' || msg.type === 'voiceflow:save_session') {
+              console.log("✅ Using generated userID as sessionId:", generatedUserId);
+
+              await fetch('https://hook.us2.make.com/x8wn53cv94mrxggpp0yrg56otvaf6e3c', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sessionId: generatedUserId })
+              });
+            }
+          } catch (e) {
+            console.error('❌ Error parsing Voiceflow event message:', e);
           }
         }
       });
     };
-    s.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs';
-    s.type = 'text/javascript';
-    h.parentNode.insertBefore(s, h);
+
+    script.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+    script.type = "text/javascript";
+    d.body.appendChild(script);
   })(document, 'script');
 </script>
 
