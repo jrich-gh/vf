@@ -82,7 +82,7 @@
 <script type="text/javascript">
   (function(d, t) {
     const script = d.createElement(t);
-    const generatedUserId = `${Date.now()}`; // 👈 store userID outside
+    const generatedUserId = `${Date.now()}`; // Store userID in case we can't get sessionID later
 
     script.onload = function() {
       window.voiceflow.chat.load({
@@ -105,21 +105,26 @@
         }, 0);
       });
 
-      // Listen for chat close or save
+      // ✅ Only trigger webhook when session actually ends
       window.addEventListener('message', async (evt) => {
         if (typeof evt.data === 'string') {
           try {
             const msg = JSON.parse(evt.data);
             console.log("🔁 Voiceflow event received:", msg);
-            console.log("🧪 Full payload contents:", msg.payload);
 
-            if (msg.type === 'voiceflow:close' || msg.type === 'voiceflow:save_session') {
-              console.log("✅ Using generated userID as sessionId:", generatedUserId);
+            if (msg.type === 'voiceflow:close') {
+              // Try to get real sessionID if available
+              const sessionId =
+                window.voiceflow?.chat?.session?.sessionID ||
+                window.voiceflow?.chat?.session?.sessionId ||
+                generatedUserId;
 
-              await fetch('https://hook.us2.make.com/x8wn53cv94mrxggpp0yrg56otvaf6e3c', {
+              console.log("✅ Session ended. Triggering webhook with sessionId:", sessionId);
+
+              await fetch('https://hook.us2.make.com/hws3nvitspnxjltfs3p8b2a3tu26uapk', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ sessionId: generatedUserId })
+                body: JSON.stringify({ sessionId })
               });
             }
           } catch (e) {
