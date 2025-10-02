@@ -1,30 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>11 Labs Demo</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      line-height: 1.6;
+    }
+    h1, h2 {
+      color: #333;
+    }
+  </style>
+</head>
 <body>
-  <div id="chat-container" style="width: 100%; height: 600px;"></div>
-  <script type="text/javascript">
-    (function(d, t) {
-        var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-        v.onload = function() {
-          window.voiceflow.chat.load({
-            verify: { projectID: '682f32eec820586e7ef69bb1' },
-            url: 'https://general-runtime.voiceflow.com',
-            versionID: 'production',
-            voice: {
-              url: "https://runtime-api.voiceflow.com"
-            },
-            render: {
-              mode: 'embedded',
-              target: document.getElementById('chat-container')
-            }
-          })
-          .then(() => {
-            setTimeout(() => {
-              window.voiceflow.chat.open();
-            }, 0);
-          });
-        };
-        v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; 
-        v.type = "text/javascript"; 
-        s.parentNode.insertBefore(v, s);
-    })(document, 'script');
-  </script>
+
+  <h1>11 Labs Demo</h1>
+
+  <h2>Press Play</h2>
+  <elevenlabs-convai agent-id="agent_6901k4dq6ca5ew1ths1d4wjrb1zh"></elevenlabs-convai><script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script> 
+
 </body>
+</html>
